@@ -33,4 +33,6 @@ This will return a professional README.md file to user.
   
   orion.gonza6@gmail.com
 
-  [!(/video/professional_README_generator.mp4)]
+  Video:
+  
+https://github.com/Orion888888/README_Generator/assets/151494847/6611df0f-5f39-4e7e-95e4-c069de7672c9
