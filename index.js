@@ -1,47 +1,69 @@
-// TODO: Include packages needed for this application
+// packages needed for this application
 const inquirer = require('inquirer');
 const fs = require('fs');
 const generateMarkdown = require('./utils/generateMarkdown.js');
-const path = require('path');
+// const path = require('path')
 
-// TODO: Create an array of questions for user input
-
-
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {
-    console.log(fileName, data);
-
-    fs.writeFileSync(path.join(__dirname, fileName), data)
-}
-
-// TODO: Create a function to initialize app
-function init() {
-inquirer
-  .prompt([
+// fs.writeFileSync(path.join(__dirname,filename),data)
+// an array of questions for user input
+const questions = [
     {
-      type: 'input',
-      message: 'What is the title of your project?',
-      name: 'title',
+        type: 'input',
+        name: 'title',
+        message: 'What is the title of your project?',
+        validate: input => {
+            if (input) {
+                return true;
+            } else {
+                console.log('Please enter a title!');
+                return false;
+            }
+        }
     },
     {
-      type: 'input',
-      message: 'What is your project description?',
-      name: 'description',
+        type: 'input',
+        name: 'description',
+        message: "What is your project's description?",
+        validate: input => {
+            if (input) {
+                return true;
+            } else {
+                console.log('Please enter a description!');
+                return false;
+            }
+        }
     },
     {
-      type: 'input',
-      message: 'Do you want a table of contents?',
-      name: 'table',
+        type: 'confirm',
+        name: 'confirmTable',
+        message: 'Do you want a Table of Contents?',
+        default: true
     },
     {
-      type: 'input',
-      message: 'What are your installation instructions?',
-      name: 'installation',
+        type: 'input',
+        name: 'installation',
+        message: 'What are your installation instructions?',
+        validate: input => {
+            if (input) {
+                return true;
+            } else {
+                console.log('Please enter any info on how to install!');
+                return false;
+            }
+        }
     },
     {
-      type: 'input',
-      message: 'What is your usage information?',
-      name: 'usage',
+        type: 'input',
+        name: 'usage',
+        message: 'What is your usage information?',
+        validate: input => {
+            if (input) {
+                return true;
+            } else {
+                console.log('Please enter any info for usage!');
+                return false;
+            }
+        }
     },
     {
         type: 'list',
@@ -66,32 +88,91 @@ inquirer
         ]
     },
     {
-      type: 'input',
-      message: 'What are your contribution guidelines?',
-      name: 'contribution',
-    },
-    {
-      type: 'input',
-      message: 'What are you test instructions?',
-      name: 'test',
-    },
-    {
         type: 'input',
-        message: 'What is your email?',
-        name: 'email',
-      },
-      {
-        type: 'input',
-        message: 'What is your GitHub?',
-        name: 'github',
-      },
-    
-  ]).then(answers =>{
-    console.log(answers);
- //   generateMarkdown(answers);
-writeToFile('/dist/README.md', generateMarkdown(answers));
-  })
-}
+        name: 'contribute',
+        message: "What are your contribution guidelines?",
+        validate: input => {
+            if (input) {
+                return true;
+            } else {
+                console.log('Please enter any how to contribute info!');
+                return false;
+            }
+          }
+        },
+        {
+            type: 'input',
+            name: 'tests',
+            message: 'What are your test instructions?',
+            validate: input => {
+                if (input) {
+                    return true;
+                } else {
+                    console.log('Please enter any how to test info!');
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'username',
+            message: "What is your GitHub Username?",
+            validate: input => {
+                if (input) {
+                    return true;
+                } else {
+                    console.log('Please enter a username!');
+                    return false;
+                  }
+                }
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: "What is your email address?",
+                validate: input => {
+                    if (input) {
+                        return true;
+                    } else {
+                        console.log('Please enter a email!');
+                        return false;
+                    }
+                }
+            },
+        ];
+        
+        // function to write README file
+        function writeToFile(fileName, data) {
+            return new Promise((resolve, reject) => {
+                fs.writeFile(fileName, data, error => {
+                    if (error) {
+                        reject(error);
+                        return;
+                      }
 
-// Function call to initialize app
-init();
+                      resolve({
+                          ok: true,
+                          message: 'File created!'
+                      });
+                  });
+              });
+          };
+          
+          // function to initialize app
+          function init() {
+              inquirer.prompt(questions)
+                  .then(answers => {
+                      console.log(answers);
+                      return generateMarkdown(answers);
+                  })
+                  .then(pageMarkdown => {
+                      writeToFile('./dist/README.md', pageMarkdown);
+                      console.log('README.md created!')
+                  })
+                  .catch((error) => {
+                      console.log(error);
+                  });
+          }
+          
+          // Function call to initialize app
+          init();
