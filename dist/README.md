@@ -1,11 +1,11 @@
 # README Generator
   test
   ## Description 
-  Asks user to answer question to generate a professional README.md file.
+  Allows user to create a professional README.md
   ## Installation
-  inquirer and node.js are needed.
+  This application will walk user throught questions to create a professional README.md file.
   ## Usage
-   Professional README generator is created when you install packages. This walks the user through a series of questions in the command line.
+  n/a
   ## License
   This application is licensed under [Apache license 2.0](test) license. Click the link for license rights and limitations.
   ## Contribute 
